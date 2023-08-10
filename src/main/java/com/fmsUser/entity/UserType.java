@@ -1,6 +1,6 @@
 package com.fmsUser.entity;
 
 public enum UserType {
-	USER,
+	CUSTOMER,
 	ADMIN
 }

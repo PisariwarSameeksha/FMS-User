@@ -1,5 +1,8 @@
 package com.fmsUser.DTO;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import com.fmsUser.entity.UserType;
 
 public class UserDTO {
@@ -8,6 +11,7 @@ public class UserDTO {
 	private String userPassword;
 	private String userPhone;
 	private String email;
+	@Enumerated(EnumType.STRING)
 	private UserType userType;
 	 
 	public UserDTO() {

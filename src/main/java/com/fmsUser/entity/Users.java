@@ -24,15 +24,11 @@ public class Users{
 	
 	@NotEmpty
 	@NotNull
-//	@Transient // meaning it will not be saved in DB
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?])[A-Za-z\\d#$@!%&*?]{8,}$", message="password must atleast contain one uppercase, one lowercase, one digit, one special character and minimum length must be 8")
 	private String userPassword;
 	
 	@NotEmpty
 	@NotNull
-//	@Range(max= 10, message = "phone_no should be exact 10 digits." )
-//	@Size(max=10, message="minimum and maximum length should be 10")
-//	@Digits(integer=10,fraction=0)
     @Pattern(regexp="^[6-9]\\d{9}$",message="Mobile Number only starts with 6-9 ,Should have 10 Digits and it contains only numeric")
 	private String userPhone;
 	

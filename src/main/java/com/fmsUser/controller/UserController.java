@@ -26,25 +26,18 @@ import com.fmsUser.exception.LoginException;
 import com.fmsUser.exception.UserException;
 import com.fmsUser.service.UserService;
 
-
 @RestController
-@RequestMapping("user")
+@RequestMapping("/api/user")
 public class UserController {
 		
 	@Autowired
 	private UserService userService;
 	
 	@PostMapping("/")
-	public ResponseEntity<String> addUser(@RequestBody @Valid UserDTO newUser)throws UserException{
+	public ResponseEntity<String> addUser(@RequestBody UserDTO newUser)throws UserException{
 		Users user=userService.addUser(newUser);
 		return ResponseEntity.status(HttpStatus.CREATED).body("User Id: "+user.getUserId()+" Details added successfully");
 	}
-	
-//		@PutMapping("/")
-//		public String updateUser(@RequestBody @Valid Users updateuser)throws UserException{
-//			Users updateUser=userService.updateUser(updateuser);
-//			return "User Id: "+updateUser.getUserId()+" Details updated successfully";
-//		}
 	
 	@PutMapping("/{userId}")
 	public String updateUserById(@PathVariable("userId") Long userId, @RequestBody @Valid Users updateUser)throws UserException{
@@ -85,17 +78,17 @@ public class UserController {
 //		return this.userService.getUsersByUserType(userType);
 //	}
 	
-	@PostMapping("/login")
-	public String login(@RequestBody Login login, HttpServletResponse responce) throws LoginException{
-		Cookie cookie = new Cookie("jwt", this.userService.login(login));
-		responce.addCookie(cookie);
-		return "Login Success!";
-	}
-	@PostMapping("/logout")
-	public String logout(HttpServletResponse response) {
-		Cookie cookie=new Cookie("jwt","");
-		response.addCookie(cookie);
-		return "Logout Success";
-	}
+//	@PostMapping("/login")
+//	public String login(@RequestBody Login login, HttpServletResponse responce) throws LoginException{
+//		Cookie cookie = new Cookie("jwt", this.userService.login(login));
+//		responce.addCookie(cookie);
+//		return "Login Success!";
+//	}
+//	@PostMapping("/logout")
+//	public String logout(HttpServletResponse response) {
+//		Cookie cookie=new Cookie("jwt","");
+//		response.addCookie(cookie);
+//		return "Logout Success";
+//	}
 }
 

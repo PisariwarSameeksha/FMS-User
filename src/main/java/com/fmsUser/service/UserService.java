@@ -19,9 +19,9 @@ public interface UserService {
 	
 	List<Users> getAllUsers();
 
-	String login(Login login) throws LoginException;
-
-	List<Users> getUsersByUserType(String userType) throws UserException;
+//	String login(Login login) throws LoginException;
+//
+//	List<Users> getUsersByUserType(String userType) throws UserException;
 
 	
 }

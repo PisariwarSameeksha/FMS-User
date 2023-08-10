@@ -38,36 +38,6 @@ public class UserServiceImplementation implements UserService{
 		Users user=modelMapper.map(newUser, Users.class);
 		return userRepository.save(user);
 	}
-
-//	@Override
-//	public Users updateUser(Users updateUser) throws UserException{
-//		Optional<Users> getUserById=userRepository.findById(updateUser.getUserId());
-//		if(getUserById.isEmpty())
-//		{
-//			throw new UserException("Cannot Update User Details As User Id not found");
-//		}
-//		Optional<Users> getUserByEmail=userRepository.findByEmail(updateUser.getEmail());
-//		if(getUserByEmail.isPresent()&& (!getUserByEmail.get().getUserId().equals(updateUser.getUserId())))
-//		{
-//				throw new UserException("Cannot Update User Details As Email Already Exists");
-//		}
-//		return userRepository.save(updateUser);
-//	}
-	
-//	@Override
-//	public Users updateUser(Integer userId, Users updateUser) throws UserException{
-//		Optional<Users> getUserById=userRepository.findById(updateUser.getUserId());
-//		if(getUserById.isEmpty())
-//		{
-//			throw new UserException("Cannot Update User Details As User Id not found");
-//		}
-////		Optional<Users> getUserByEmail=userRepository.findByEmail(updateUser.getEmail());
-////		if(getUserByEmail.isPresent()&& (!getUserByEmail.get().getUserId().equals(updateUser.getUserId())))
-////		{
-////				throw new UserException("Cannot Update User Details As Email Already Exists");
-////		}
-//		return userRepository.save(updateUser);
-//	}
 	
 	@Override
 	public Users updateUser(Long userId, Users updateUser) throws UserException{
@@ -116,31 +86,28 @@ public class UserServiceImplementation implements UserService{
 		return userRepository.findAll();
 	}
 	
-	@Override
-	public List<Users> getUsersByUserType(String userType)throws UserException{
-		List<Users> usersList=userRepository.findByUserType(userType);
-		if(usersList.isEmpty()) {
-			throw new UserException("There are no users of type:"+userType);
-		}
-		return usersList;
-	}
-	
-	@Override
-	public String login(Login login) throws LoginException {
-		Optional<Users> customer=this.userRepository.findByEmail(login.getUsername());
-		if(customer.isEmpty()) {
-			throw new LoginException("User doesn't exist with the given userName and Password.");
-		}
-		if(!customer.get().getUserPassword().equals(login.getPassword())) {
-			throw new LoginException("Password is wrong.");
-		}
-		String issuer=customer.get().getEmail();
-		Date expiry = new Date(System.currentTimeMillis()+(60*60*1000));
-		
-		return Jwts.builder().setIssuer(issuer).setExpiration(expiry).signWith(SignatureAlgorithm.HS512, "Secret123").compact();
-	}
-	
-	public List<Users> findUserWithSorting(String field){
-		return userRepository.findAll(Sort.by(Sort.Direction.ASC,field));
-	}
+//	@Override
+//	public List<Users> getUsersByUserType(String userType)throws UserException{
+//		List<Users> usersList=userRepository.findByUserType(userType);
+//		if(usersList.isEmpty()) {
+//			throw new UserException("There are no users of type:"+userType);
+//		}
+//		return usersList;
+//	}
+//	
+//	@Override
+//	public String login(Login login) throws LoginException {
+//		Optional<Users> customer=this.userRepository.findByEmail(login.getUsername());
+//		if(customer.isEmpty()) {
+//			throw new LoginException("User doesn't exist with the given userName and Password.");
+//		}
+//		if(!customer.get().getUserPassword().equals(login.getPassword())) {
+//			throw new LoginException("Password is wrong.");
+//		}
+//		String issuer=customer.get().getEmail();
+//		Date expiry = new Date(System.currentTimeMillis()+(60*60*1000));
+//		
+//		return Jwts.builder().setIssuer(issuer).setExpiration(expiry).signWith(SignatureAlgorithm.HS512, "Secret123").compact();
+//	}
+
 }
