@@ -1,21 +1,15 @@
 package com.fmsUser.repository;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import com.fmsUser.DTO.UserDTO;
-import com.fmsUser.entity.Users;
+import com.fmsUser.entity.User;
 
-@Repository
-public interface UserRepository extends JpaRepository<Users, Long>{
+public interface UserRepository extends JpaRepository<User, Long> {
 
-	Optional<Users> findByEmail(String email);
+	@Query("select user from Users user where userName = :userName and password=:password")
+	public User getUserByUsernameAndPassword(@Param("userName") String userName, @Param("password") String password);
 
-	List<Users> findByUserType(String userType);
-
-	Users save(UserDTO newUser);	
-
+	public User findByUserName(String username);
 }

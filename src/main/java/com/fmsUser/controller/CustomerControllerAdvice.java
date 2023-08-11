@@ -10,23 +10,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.fmsUser.exception.LoginException;
-import com.fmsUser.exception.UserException;
+import com.fmsUser.exception.CustomerException;
 
 @RestControllerAdvice
-public class UserControllerAdvice {
-	@ExceptionHandler(UserException.class)
+public class CustomerControllerAdvice {
+
+	@ExceptionHandler(CustomerException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public String handleUserException(UserException exception) {
+	public String handleUserException(CustomerException exception) {
 		return exception.getMessage();
 	}
-	
-	@ExceptionHandler(LoginException.class)
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public String handleLoginException(LoginException exception) {
-		return exception.getMessage();
-	}
-	
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -39,4 +33,3 @@ public class UserControllerAdvice {
 		return errors;
 	}
 }
-
