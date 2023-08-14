@@ -16,4 +16,8 @@ public interface CustomerService {
 
 	List<Customer> getAllUsers();
 
+//	Customer changePassword(Long id, String password);
+
+	Customer changePassword(String email, String password) throws CustomerException;
+
 }

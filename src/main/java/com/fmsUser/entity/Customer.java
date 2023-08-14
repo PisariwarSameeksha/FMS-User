@@ -26,7 +26,7 @@ public class Customer extends User {
 
 	@NotEmpty
 	@NotNull
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?])[A-Za-z\\d#$@!%&*?]{8,}$", message = "password must atleast contain one uppercase, one lowercase, one digit, one special character and minimum length must be 8")
+//	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?])[A-Za-z\\d#$@!%&*?]{8,}$", message = "password must atleast contain one uppercase, one lowercase, one digit, one special character and minimum length must be 8")
 	private String password;
 
 	@NotEmpty

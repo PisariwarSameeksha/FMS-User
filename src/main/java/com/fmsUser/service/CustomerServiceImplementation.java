@@ -42,6 +42,7 @@ public class CustomerServiceImplementation implements CustomerService {
 			if (getUserByEmail.isPresent() && (!getUserByEmail.get().getUserId().equals(userId))) {
 				throw new CustomerException("Cannot Update User Details As Email Already Exists");
 			}
+			updateUser.setUserId(userId);
 			updateUser.setName(updateUser.getName());
 			updateUser.setEmail(updateUser.getEmail().toLowerCase());
 			updateUser.setPassword(updateUser.getPassword());
@@ -75,6 +76,33 @@ public class CustomerServiceImplementation implements CustomerService {
 	@Override
 	public List<Customer> getAllUsers() {
 		return customerRepository.findAll();
+	}
+
+//	@Override
+//	public Customer changePassword(Long id, String password) {
+//		if (customerRepository.existsById(id)) {
+//			Customer customer=customerRepository.findById(id).get();
+//			customer.setPassword(password);
+//			customerRepository.save(customer);
+//			return customer;
+//		}
+//		else {
+//			return null;
+//		}
+//	}
+
+	@Override
+	public Customer changePassword(String email, String password) throws CustomerException {
+		Optional<Customer> customer = customerRepository.findByEmail(email);
+		if (customer.isEmpty()) {
+			throw new CustomerException("User does not exist with the given email id");
+		}
+
+		Customer customer1 = customerRepository.findByEmail(email).get();
+		customer1.setPassword(password);
+		customerRepository.save(customer1);
+		return customer1;
+
 	}
 
 }

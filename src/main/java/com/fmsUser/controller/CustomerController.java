@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import com.fmsUser.exception.CustomerException;
 import com.fmsUser.service.CustomerService;
 
 @RestController
+//@Validated
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "http://localhost:4200/")
 public class CustomerController {
@@ -93,5 +95,15 @@ public class CustomerController {
 		List<Customer> userList = userService.getAllUsers();
 		logger.info("fetched {} users", userList.size());
 		return ResponseEntity.status(HttpStatus.OK).body(userList);
+	}
+
+//	@PutMapping("/forgotPassword/{userId}")
+//	public Customer changePassword(@PathVariable("userId") Long customerId, @RequestBody @Valid String password) {
+//		return this.userService.changePassword(customerId, password);
+//	}
+	
+	@PutMapping("/forgotPassword/{email}")
+	public Customer changePassword(@PathVariable("email") String email, @RequestBody String password) throws CustomerException {
+		return this.userService.changePassword(email, password);
 	}
 }
