@@ -34,24 +34,25 @@ public class CustomerServiceImplementation implements CustomerService {
 
 	@Override
 	public Customer updateUser(Long userId, Customer updateUser) throws CustomerException {
-		Optional<Customer> getUserById = customerRepository.findById(userId);
-		if (getUserById.isEmpty()) {
-			throw new CustomerException("Cannot Update User Details As User Id not found");
-		} else {
+		if (customerRepository.existsById(userId)) {
+			Optional<Customer> getUserById = customerRepository.findById(userId);
 			Optional<Customer> getUserByEmail = customerRepository.findByEmail(updateUser.getEmail());
 			if (getUserByEmail.isPresent() && (!getUserByEmail.get().getUserId().equals(userId))) {
 				throw new CustomerException("Cannot Update User Details As Email Already Exists");
 			}
-			updateUser.setUserId(userId);
-			updateUser.setName(updateUser.getName());
-			updateUser.setEmail(updateUser.getEmail().toLowerCase());
-			updateUser.setPassword(updateUser.getPassword());
-			updateUser.setContactNo(updateUser.getContactNo());
-			updateUser.setDob(updateUser.getDob());
-			updateUser.setAddress(updateUser.getAddress());
-
+			Customer foundUser = getUserById.get();
+			foundUser.setName(updateUser.getName());
+			foundUser.setEmail(updateUser.getEmail().toLowerCase());
+			foundUser.setPassword(updateUser.getPassword());
+			foundUser.setContactNo(updateUser.getContactNo());
+			foundUser.setDob(updateUser.getDob());
+			foundUser.setAddress(updateUser.getAddress());
+			customerRepository.save(foundUser);
+			return foundUser;
 		}
-		return customerRepository.save(updateUser);
+		else {
+			throw new CustomerException("Cannot Update User Details As User Id not found");
+		}
 	}
 
 	@Override
@@ -78,31 +79,15 @@ public class CustomerServiceImplementation implements CustomerService {
 		return customerRepository.findAll();
 	}
 
-//	@Override
-//	public Customer changePassword(Long id, String password) {
-//		if (customerRepository.existsById(id)) {
-//			Customer customer=customerRepository.findById(id).get();
-//			customer.setPassword(password);
-//			customerRepository.save(customer);
-//			return customer;
-//		}
-//		else {
-//			return null;
-//		}
-//	}
-
 	@Override
 	public Customer changePassword(String email, String password) throws CustomerException {
 		Optional<Customer> customer = customerRepository.findByEmail(email);
 		if (customer.isEmpty()) {
 			throw new CustomerException("User does not exist with the given email id");
 		}
-
 		Customer customer1 = customerRepository.findByEmail(email).get();
 		customer1.setPassword(password);
 		customerRepository.save(customer1);
 		return customer1;
-
 	}
-
 }

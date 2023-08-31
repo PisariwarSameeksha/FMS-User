@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.validation.constraints.Pattern;
 
 @Entity(name = "Users")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -14,6 +15,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long userId;
+	@Pattern(regexp= "^[a-zA-Z0-9_-]{8,15}$", message = "User name can contain alphabets, digits, _ , - and min length is 8 and max length is 15.")
 	private String userName;
 	private String password;
 	private String role;

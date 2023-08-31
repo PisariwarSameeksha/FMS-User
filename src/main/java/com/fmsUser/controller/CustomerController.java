@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,16 +33,16 @@ public class CustomerController {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
 	@Autowired
-	private CustomerService userService;
+	private CustomerService customerService;
 
 	@PostMapping("/")
 	public ResponseEntity<String> addUser(@RequestBody @Valid Customer newUser) throws CustomerException {
 		try {
 			logger.info("Received request to add new user: {}", newUser);
-			Customer user = userService.addUser(newUser);
+			Customer user = customerService.addUser(newUser);
 			logger.info("User added: {}", newUser);
 			return ResponseEntity.status(HttpStatus.CREATED)
-					.body("User Id: " + user.getUserId() + " Details added successfully");
+					.body("User Id: " + user.getUserId() + " details added successfully");
 		} catch (CustomerException e) {
 			logger.warn("can't create new user as email id: {} is already existed", newUser.getEmail());
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
@@ -55,10 +54,10 @@ public class CustomerController {
 			@RequestBody @Valid Customer updateUser) throws CustomerException {
 		try {
 			logger.info("Received request to modify with userId: {}", userId);
-			Customer existingUser = userService.updateUser(userId, updateUser);
-			logger.info("User details modified successfully", userId);
+			Customer existingUser = customerService.updateUser(userId, updateUser);
+			logger.info("User details having userId: {} modified successfully", userId);
 			return ResponseEntity.status(HttpStatus.OK)
-					.body("User Id: " + existingUser.getUserId() + " Details updated successfully");
+					.body("User Id: " + existingUser.getUserId() + " details updated successfully");
 		} catch (CustomerException e) {
 			logger.warn(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -69,7 +68,7 @@ public class CustomerController {
 	public ResponseEntity<Customer> getUserById(@PathVariable("id") Long userId, HttpServletRequest request)
 			throws CustomerException {
 		logger.info("Received request to fetch details for given user id: {}", userId);
-		Customer user = userService.getUserById(userId);
+		Customer user = customerService.getUserById(userId);
 		logger.info("User details fetched successfully for the given user id: {}", userId);
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
@@ -79,8 +78,8 @@ public class CustomerController {
 			throws CustomerException {
 		try {
 			logger.info("Received request to remove user having User Id: {}", userId);
-			Customer user = userService.deleteUserById(userId);
-			logger.info("User having user id removed successfully", userId);
+			Customer user = customerService.deleteUserById(userId);
+			logger.info("User having user id: {} removed successfully", userId);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT)
 					.body("User Id: " + user.getUserId() + " was deleted successfully");
 		} catch (CustomerException e) {
@@ -92,18 +91,13 @@ public class CustomerController {
 	@GetMapping("/")
 	public ResponseEntity<List<Customer>> getAllUsers() {
 		logger.info("Received request to fetch all users");
-		List<Customer> userList = userService.getAllUsers();
+		List<Customer> userList = customerService.getAllUsers();
 		logger.info("fetched {} users", userList.size());
 		return ResponseEntity.status(HttpStatus.OK).body(userList);
 	}
-
-//	@PutMapping("/forgotPassword/{userId}")
-//	public Customer changePassword(@PathVariable("userId") Long customerId, @RequestBody @Valid String password) {
-//		return this.userService.changePassword(customerId, password);
-//	}
 	
 	@PutMapping("/forgotPassword/{email}")
 	public Customer changePassword(@PathVariable("email") String email, @RequestBody String password) throws CustomerException {
-		return this.userService.changePassword(email, password);
+		return this.customerService.changePassword(email, password);
 	}
 }
